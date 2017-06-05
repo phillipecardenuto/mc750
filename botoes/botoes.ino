@@ -1,6 +1,25 @@
 #include <Bounce2.h>
+#include <ESP8266WiFi.h>
+#include "Adafruit_MQTT.h"
+#include "Adafruit_MQTT_Client.h"
+
 # define Intervalo 100
 
+//WiFI
+#define WIFI_SSID       "Xolamais"
+#define WIFI_PASS       "123456789"
+
+//Adafruit IO
+#define AIO_SERVER       "io.adafruit.com"
+#define AIO_SERVERPORT   1883
+#define AIO_USERNAME     "R0m3r0"
+#define AIO_KEY          "b7b62e5209d84092b25e4ae48598ea29"
+
+WiFiClient client;
+Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
+Adafruit_MQTT_Publish vibration = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/vibration");
+
+void MQTT_connect();
 
 // Inicializa pinos dos Botoes
 const short BotaoDaAlegria = 16; //D0
@@ -31,9 +50,23 @@ short FlagBotao=0;
 
 void setup(){
   // Serial comunicação para a tela
-  Serial.begin(9600);
-  // Debug
-  Serial.println("Comecando Teste:");
+   Serial.begin(115200);
+
+  Serial.print("Connecting to ");
+  Serial.println(WIFI_SSID);
+
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+
+
    
   // Inicializa os Botoes como entrada de porta
   pinMode(BotaoDaAlegria, INPUT);
@@ -100,6 +133,18 @@ void loop(){
    
 }
 
+
+/*
+ * Para Cada função é preciso fazer um publish quando o botao eh acionado para o feed do nome do botao
+ * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ * X----------------ARRUMAR--------------------X
+ * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ */
+
+
+
+
+
 // Funções de tratamento da ativação dos botões
 void alegria(){
   if(FlagBotao != 1){
@@ -154,5 +199,33 @@ void nojo(){
   }
   FlagBotao=6;
   
+}
+
+
+void MQTT_connect()
+{
+  int8_t ret;
+
+  if (mqtt.connected())
+  {
+    return;
+  }
+
+  Serial.print("Connecting to MQTT... ");
+
+  uint8_t retries = 3;
+  while ((ret = mqtt.connect()) != 0)
+  {
+       Serial.println(mqtt.connectErrorString(ret));
+       Serial.println("Retrying MQTT connection in 5 seconds...");
+       mqtt.disconnect();
+       delay(5000);
+       retries--;
+       if (retries == 0)
+       {
+         while (1);
+       }
+  }
+  Serial.println("MQTT Connected!");
 }
 
