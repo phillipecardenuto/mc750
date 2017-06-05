@@ -1,13 +1,13 @@
-const int ledPin1 = 13;
-const int ledPin2 = 14;
-const int ledPin3 = 12;
-const int BotaoDaAlegria = 16;
-const int BotaoDaTristeza = 5;
-const int BotaoDoPrazer = 4;
-int EstadoBotao1 = 0;
-int EstadoBotao2 = 0;
-int EstadoBotao3 = 0;
-int FlagBotao=0;
+const short  ledPin1 = 13;
+const short  ledPin2 = 14;
+const short  ledPin3 = 12;
+const short  BotaoDaAlegria = 16;
+const short  BotaoDaTristeza = 5;
+const short  BotaoDoPrazer = 4;
+short EstadoBotao1 = 0;
+short  EstadoBotao2 = 0;
+short  EstadoBotao3 = 0;
+short  FlagBotao=0;
 
 void setup(){
   pinMode(ledPin1, OUTPUT);
@@ -59,9 +59,14 @@ void prazer(){
   digitalWrite(ledPin3, LOW);
   
 }
-/*
-void desgosto()
-void raiva()
-void nojo()
-*/
+void desgosto(){
+  
+}
+void raiva(){
+  
+}
+void nojo(){
+  
+}
+
 
