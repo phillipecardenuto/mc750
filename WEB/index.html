@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Monalisa</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+
+        <div id="monalisa"><img id ="img" src="" width=100% height="100%"/></div>
+
+        <div id="lateral">
+            <button id="btn-vibration" onmousedown="sendFeed('vibration', '1')" onmouseup="sendFeed('vibration', '0')">Vibration</button>
+            <button id="btn-led" onmousedown="sendFeed('led', '1')" onmouseup="sendFeed('led', '0')">LED</button>
+            <button id="btn-image" onmousedown="sendFeed('image', '1')">Tristeza</button>
+            <button id="btn-image" onmousedown="sendFeed('image', '2')">Felicia</button>
+            <button id="btn-image" onmousedown="sendFeed('image', '3')">Alegria</button>
+            <button id="btn-image" onmousedown="sendFeed('image', '4')">Amor</button>
+            <button id="btn-image" onmousedown="sendFeed('image', '5')">Raiva</button>
+            <button id="btn-image" onmousedown="sendFeed('image', '6')">Desgosto</button>
+
+
+
+
+        </div>
+
+        <script src="js/mqtt.min.js"></script>
+        <script src="js/script.js"></script>
+
+    </body>
+</html>
