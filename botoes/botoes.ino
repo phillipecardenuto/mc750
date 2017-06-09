@@ -6,8 +6,8 @@
 # define Intervalo 100
 
 //WiFI
-#define WIFI_SSID       "Xolamais"
-#define WIFI_PASS       "123456789"
+#define WIFI_SSID       "PENSIONATO VIVO DIAN"
+#define WIFI_PASS       "2462462016"
 
 //Adafruit IO
 #define AIO_SERVER       "io.adafruit.com"
@@ -17,14 +17,15 @@
 
 WiFiClient client;
 Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
-Adafruit_MQTT_Publish vibration = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/vibration");
+//Adafruit_MQTT_Publish vibration = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/vibration");
+Adafruit_MQTT_Publish image = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/image");
 
 void MQTT_connect();
 
 // Inicializa pinos dos Botoes
 const short BotaoDaAlegria = 16; //D0
 const short BotaoDaTristeza = 5; //D1
-const short BotaoDoPrazer = 4; // D2
+const short BotaoDoFelicia = 4; // D2
 const short BotaoDaRaiva = 14; //D5
 const short BotaoDoNojo = 12; //D6
 const short BotaoDoDesgosto = 13; //D7
@@ -32,7 +33,7 @@ const short BotaoDoDesgosto = 13; //D7
 // Inicializa Debounce
 Bounce b_alegria = Bounce ();
 Bounce  b_tristeza = Bounce ();
-Bounce  b_prazer = Bounce ();
+Bounce  b_felicia = Bounce ();
 Bounce  b_desgosto = Bounce ();
 Bounce  b_raiva = Bounce ();
 Bounce  b_nojo = Bounce ();
@@ -40,7 +41,7 @@ Bounce  b_nojo = Bounce ();
 // Inicializa Estado dos Botoes
 short EstadoBotaoDaAlegria = 0;
 short EstadoBotaoDaTristeza = 0;
-short EstadoBotaoDoPrazer = 0;
+short EstadoBotaoDoFelicia = 0;
 short EstadoBotaoDoDesgosto = 0;
 short EstadoBotaoDaRaiva = 0;
 short EstadoBotaoDoNojo = 0;
@@ -71,7 +72,7 @@ void setup(){
   // Inicializa os Botoes como entrada de porta
   pinMode(BotaoDaAlegria, INPUT);
   pinMode(BotaoDaTristeza, INPUT);
-  pinMode(BotaoDoPrazer, INPUT);
+  pinMode(BotaoDoFelicia, INPUT);
   pinMode(BotaoDoDesgosto, INPUT);
   pinMode(BotaoDaRaiva, INPUT);
   pinMode(BotaoDoNojo, INPUT);
@@ -81,8 +82,8 @@ void setup(){
   b_alegria.interval(Intervalo);
   b_tristeza.attach(BotaoDaTristeza);
   b_tristeza.interval(Intervalo);
-  b_prazer.attach(BotaoDoPrazer);
-  b_prazer.interval(Intervalo);
+  b_felicia.attach(BotaoDoFelicia);
+  b_felicia.interval(Intervalo);
   b_desgosto.attach(BotaoDoDesgosto);
   b_desgosto.interval(Intervalo);
   b_raiva.attach(BotaoDaRaiva);
@@ -94,10 +95,11 @@ void setup(){
 
 }
 void loop(){
+   MQTT_connect();
   // Realiza o update do efeito de bounce
   b_alegria.update();
   b_tristeza.update();
-  b_prazer.update();
+  b_felicia.update();
   b_desgosto.update();
   b_raiva.update();
   b_nojo.update();
@@ -105,19 +107,20 @@ void loop(){
   // Verifica cada estado de botao 
   EstadoBotaoDaAlegria = b_alegria.read();
   EstadoBotaoDaTristeza = b_tristeza.read();
-  EstadoBotaoDoPrazer = b_prazer.read();
+  EstadoBotaoDoFelicia = b_felicia.read();
   EstadoBotaoDoDesgosto = b_desgosto.read();
   EstadoBotaoDaRaiva = b_raiva.read();
   EstadoBotaoDoNojo = b_nojo.read();
   // Permite que um botao seja apertado de cada vez
   if (EstadoBotaoDaAlegria == HIGH and (FlagBotao==1 or FlagBotao==0)){
     alegria();
+    
   }
   else if (EstadoBotaoDaTristeza == HIGH and (FlagBotao==2 or FlagBotao==0) ){
     tristeza();
   }
-  else if(EstadoBotaoDoPrazer == HIGH and (FlagBotao==3 or FlagBotao==0) ){
-    prazer();
+  else if(EstadoBotaoDoFelicia == HIGH and (FlagBotao==3 or FlagBotao==0) ){
+    felicia();
   }
   else if(EstadoBotaoDoDesgosto == HIGH and (FlagBotao==4 or FlagBotao==0) ){
     desgosto();
@@ -150,6 +153,7 @@ void alegria(){
   if(FlagBotao != 1){
     Serial.println("=)");
     Serial.println("Alegria");
+    image.publish(3);
     delay(1000);
   }
   FlagBotao=1;
@@ -159,26 +163,32 @@ void tristeza(){
   if(FlagBotao != 2){
     Serial.println(":(");
     Serial.println("Tristeza");
+    image.publish(1);
     delay(1000);
   }
   FlagBotao=2;
   
 }
-void prazer(){
+//FElica
+void felicia(){
   if(FlagBotao != 3){
     Serial.println("xD");
-    Serial.println("Prazer");
+    Serial.println("Felicia");
     delay(1000);
+    image.publish(2);
   }
   FlagBotao=3;
   
   
 }
+
+
 void desgosto(){
   if(FlagBotao != 4){
     Serial.println(":'(");
     Serial.println("Desgosto");
     delay(1000);
+    image.publish(6);
   }
   FlagBotao=4;
 }
@@ -187,15 +197,19 @@ void raiva(){
     Serial.println(":@");
     Serial.println("Raiva");
     delay(1000);
+    image.publish(5);
   }
   FlagBotao=5;
   
 }
+
+//Amor
 void nojo(){
   if(FlagBotao != 6){
     Serial.println(":~/");
     Serial.println("Nojo");
     delay(1000);
+    image.publish(4);
   }
   FlagBotao=6;
   

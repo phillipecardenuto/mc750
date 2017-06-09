@@ -4,11 +4,11 @@ html {
     overflow: hidden;
 }
 
-#monalisa {
+#romero {
     width: 400px;
     height: 400px;
     margin: 100px auto;
-    background: url("img/monalisa.png") no-repeat;
+    background: url("img/romero.jpg") no-repeat;
     border:solid 10px;
     border-bottom-color:#ffe;
     border-left-color:#eed;
@@ -17,7 +17,7 @@ html {
     box-shadow: 10px 10px 25px #999999;
 }
 
-#monalisa.ativo {
+#romero.ativo {
     background: url("img/monalisa2.png") no-repeat;
     animation: shake 0.1s infinite;
 }

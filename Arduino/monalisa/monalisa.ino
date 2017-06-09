@@ -7,8 +7,8 @@ const int vibration_pin = 5;
 int vibration_last = 0;
 
 //WiFI
-#define WIFI_SSID       "Xolamais"
-#define WIFI_PASS       "123456789"
+#define WIFI_SSID       "PENSIONATO VIVO DIAN"
+#define WIFI_PASS       "2462462016"
 
 //Adafruit IO
 #define AIO_SERVER       "io.adafruit.com"
