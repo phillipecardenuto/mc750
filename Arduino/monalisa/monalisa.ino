@@ -25,7 +25,7 @@ void MQTT_connect();
 void setup()
 {
   pinMode(led_pin, OUTPUT);
-  
+
   Serial.begin(115200);
 
   Serial.print("Connecting to ");
@@ -49,7 +49,7 @@ void loop()
 {
   MQTT_connect();
 
-  if(digitalRead(vibration_pin) == HIGH && vibration_last == 0)
+  if (digitalRead(vibration_pin) == HIGH && vibration_last == 0)
   {
     vibration.publish(1);
     Serial.println("Vibration HIGH");
@@ -57,7 +57,7 @@ void loop()
     delay(300);
   }
 
-  if(digitalRead(vibration_pin) == LOW && vibration_last == 1)
+  if (digitalRead(vibration_pin) == LOW && vibration_last == 1)
   {
     vibration.publish(0);
     Serial.println("Vibration LOW");
@@ -82,7 +82,7 @@ void loop()
       }
     }
   }
-  
+
 }
 
 void MQTT_connect()
@@ -99,15 +99,15 @@ void MQTT_connect()
   uint8_t retries = 3;
   while ((ret = mqtt.connect()) != 0)
   {
-       Serial.println(mqtt.connectErrorString(ret));
-       Serial.println("Retrying MQTT connection in 5 seconds...");
-       mqtt.disconnect();
-       delay(5000);
-       retries--;
-       if (retries == 0)
-       {
-         while (1);
-       }
+    Serial.println(mqtt.connectErrorString(ret));
+    Serial.println("Retrying MQTT connection in 5 seconds...");
+    mqtt.disconnect();
+    delay(5000);
+    retries--;
+    if (retries == 0)
+    {
+      while (1);
+    }
   }
   Serial.println("MQTT Connected!");
 }
