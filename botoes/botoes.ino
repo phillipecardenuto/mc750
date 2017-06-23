@@ -1,13 +1,13 @@
 #include <Bounce2.h>
-#include <    .h>
+#include <ESP8266WiFi.h>
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 
 # define Intervalo 100
 
 //WiFI
-#define WIFI_SSID       "PENSIONATO VIVO DIAN"
-#define WIFI_PASS       "2462462016"
+#define WIFI_SSID       "open-ic"
+#define WIFI_PASS       "ere9Aeng4I"
 
 //Adafruit IO
 #define AIO_SERVER       "io.adafruit.com"
@@ -27,12 +27,12 @@ const short BotaoDaTristeza = 14; //D5  //Tristeza
 const short BotaoDoFelicia = 12; // D6  //ALGODAO
 const short BotaoDaRaiva = 4; //D2      //LIXA
 const short BotaoDoNojo = 13; //D7       //amoeba
-const short BotaoDoDesgosto = 5; //D1  // VELUDO AMOR
+const short BotaoDoAmor = 5; //D1  // VELUDO AMOR
 
 
 //ALEGRIA - ESPONJA
 //AMOR - VELUDO
-//DESGOSTO - AMOEBA
+//NOJO | DESGOSTO  - AMOEBA
 //FELICIA - ALGODAO
 //RAIVA- LIXA
 //TRISTEZA - VELCRO
@@ -42,7 +42,7 @@ const short BotaoDoDesgosto = 5; //D1  // VELUDO AMOR
 Bounce b_alegria = Bounce ();
 Bounce  b_tristeza = Bounce ();
 Bounce  b_felicia = Bounce ();
-Bounce  b_desgosto = Bounce ();
+Bounce  b_Amor = Bounce ();
 Bounce  b_raiva = Bounce ();
 Bounce  b_nojo = Bounce ();
 
@@ -50,7 +50,7 @@ Bounce  b_nojo = Bounce ();
 short EstadoBotaoDaAlegria = 0;
 short EstadoBotaoDaTristeza = 0;
 short EstadoBotaoDoFelicia = 0;
-short EstadoBotaoDoDesgosto = 0;
+short EstadoBotaoDoAmor = 0;
 short EstadoBotaoDaRaiva = 0;
 short EstadoBotaoDoNojo = 0;
 
@@ -80,7 +80,7 @@ void setup() {
   pinMode(BotaoDaAlegria, INPUT);
   pinMode(BotaoDaTristeza, INPUT);
   pinMode(BotaoDoFelicia, INPUT);
-  pinMode(BotaoDoDesgosto, INPUT);
+  pinMode(BotaoDoAmor, INPUT);
   pinMode(BotaoDaRaiva, INPUT);
   pinMode(BotaoDoNojo, INPUT);
 
@@ -91,8 +91,8 @@ void setup() {
   b_tristeza.interval(Intervalo);
   b_felicia.attach(BotaoDoFelicia);
   b_felicia.interval(Intervalo);
-  b_desgosto.attach(BotaoDoDesgosto);
-  b_desgosto.interval(Intervalo);
+  b_Amor.attach(BotaoDoAmor);
+  b_Amor.interval(Intervalo);
   b_raiva.attach(BotaoDaRaiva);
   b_raiva.interval(Intervalo);
   b_nojo.attach(BotaoDoNojo);
@@ -107,7 +107,7 @@ void loop() {
   b_alegria.update();
   b_tristeza.update();
   b_felicia.update();
-  b_desgosto.update();
+  b_Amor.update();
   b_raiva.update();
   b_nojo.update();
 
@@ -115,7 +115,7 @@ void loop() {
   EstadoBotaoDaAlegria = b_alegria.read();
   EstadoBotaoDaTristeza = b_tristeza.read();
   EstadoBotaoDoFelicia = b_felicia.read();
-  EstadoBotaoDoDesgosto = b_desgosto.read();
+  EstadoBotaoDoAmor = b_Amor.read();
   EstadoBotaoDaRaiva = b_raiva.read();
   EstadoBotaoDoNojo = b_nojo.read();
   // Permite que um botao seja apertado de cada vez
@@ -128,8 +128,8 @@ void loop() {
   else if (EstadoBotaoDoFelicia == HIGH and (FlagBotao == 3 or FlagBotao == 0) ) {
     felicia();
   }
-  else if (EstadoBotaoDoDesgosto == HIGH and (FlagBotao == 4 or FlagBotao == 0) ) {
-    desgosto();
+  else if (EstadoBotaoDoAmor == HIGH and (FlagBotao == 4 or FlagBotao == 0) ) {
+    Amor();
   }
   else if (EstadoBotaoDaRaiva == HIGH and (FlagBotao == 5 or FlagBotao == 0) ) {
     raiva();
@@ -141,16 +141,6 @@ void loop() {
     FlagBotao = 0;
 
 }
-
-
-/*
-   Para Cada função é preciso fazer um publish quando o botao eh acionado para o feed do nome do botao
-   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-   X----------------ARRUMAR--------------------X
-   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-*/
-
-
 
 
 
@@ -189,10 +179,10 @@ void felicia() {
 }
 
 
-void desgosto() {
+void Amor() {
   if (FlagBotao != 4) {
     Serial.println(":'(");
-    Serial.println("Desgosto");
+    Serial.println("Amor");
     delay(1000);
     image.publish(6);
   }
@@ -209,7 +199,7 @@ void raiva() {
 
 }
 
-//Amor
+
 void nojo() {
   if (FlagBotao != 6) {
     Serial.println(":~/");

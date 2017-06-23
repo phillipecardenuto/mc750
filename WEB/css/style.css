@@ -1,27 +1,44 @@
 html {
-    background-image: linear-gradient(#EEEEEE, #AAAAAA);
-    height:100%;
     overflow: hidden;
+}
+body { 
+    font-family: "freight-text-pro", freightText, Georgia, serif;
+    color: #393939;
+    font-size: 20;
+    margin: 0px 0px 0px 0px;
+}
+#fundo{
+    height:100vh;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background: url("img/fundo3.jpg") repeat;
+    position:relative;
+    
+}
+#moldura{
+    min-width: 900px;
+    min-height: 900px;
+    margin: 1% auto auto 50vh;
+    background: url("img/moldura2.png") no-repeat; 
+    background-size: contain;
+    position:absolute;
 }
 
 #romero {
-    width: 400px;
-    height: 400px;
-    margin: 100px auto;
+    width: 606px;
+    height: 502px;
+    margin-top:185px;
+    margin-left:147px;
+    position:absolute;
     background: url("img/romero.jpg") no-repeat;
-    border:solid 10px;
-    border-bottom-color:#ffe;
-    border-left-color:#eed;
-    border-right-color:#eed;
-    border-top-color:#ccb;
-    box-shadow: 10px 10px 25px #999999;
+    background-position: center;
+    background-size: contain;
 }
 
 #romero.ativo {
     background: url("img/monalisa2.png") no-repeat;
     animation: shake 0.1s infinite;
 }
-
 
 @keyframes shake {
   10%, 90% { transform: translate3d(-5px, 5px, 0); }
@@ -32,11 +49,12 @@ html {
 
 #lateral {
     position: absolute;
-    top: 15px;
-    left: 15px;
+    top:10px;
+    left:10px;  
 }
 
 button {
     font-size: 1.2em;
     padding: 0.2em;
+
 }
