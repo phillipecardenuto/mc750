@@ -7,7 +7,7 @@ para demonstrar essa emoção. Ela teve como inspiração a ideia de acessibilid
 
 
 
-![](/media/phillipe/5C8067C68067A4EC/Users/Phillipe/Documents/EngComp015/5-Sem/MC750/Projeto/mc750/WEB/css/img/romero.jpg)
+![](https://github.com/phillipecardenuto/mc750/blob/master/WEB/css/img/romero.jpg?raw=true)
 
 
 
